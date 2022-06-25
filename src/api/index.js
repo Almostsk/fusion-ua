@@ -1,24 +1,24 @@
-import axios from 'axios'
+import axios from 'axios';
 
 const url = process.env.CURRENT_ENV ? 'http://localhost:5000' : 'https://fusion-ua.herokuapp.com';
 
-const API = axios.create({baseURL: url});
+const API = axios.create({ baseURL: url });
 
 API.interceptors.request.use((req) => {
-    if(localStorage.getItem('profile')) {
-        req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`
-    }
+  if (localStorage.getItem('profile')) {
+    req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
+  }
 
-    return req;
-})
+  return req;
+});
 
 // const url = 'https://fusion-ua.herokuapp.com/posts';
 
 export const fetchPosts = () => API.get('/posts');
-export const createPost = (newPost) => API.post('/posts', newPost)
-export const updatePost = (id, updatedPost) => API.patch(`/posts/${id}`, updatedPost)
-export const likePost = (id) => API.patch(`/posts/${id}/likePost`)
-export const deletePost = (id) => API.delete(`/posts/${id}`)
+export const createPost = (newPost) => API.post('/posts', newPost);
+export const updatePost = (id, updatedPost) => API.patch(`/posts/${id}`, updatedPost);
+export const likePost = (id) => API.patch(`/posts/${id}/likePost`);
+export const deletePost = (id) => API.delete(`/posts/${id}`);
 
 export const signIn = (formData) => API.post('/user/signin', formData);
 export const signUp = (formData) => API.post('/user/signup', formData);
