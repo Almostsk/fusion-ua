@@ -28,6 +28,9 @@ module.exports = {
     'max-len': 'off',
     'no-console': 'off',
     'default-param-last': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
   },
   settings: {
     'import/resolver': {

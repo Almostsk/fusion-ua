@@ -4,19 +4,21 @@ import {
 } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import useStyles from './styles';
 import { createPost, updatePost } from '../../actions/posts';
 
 const Form = ({ currentId, setCurrentId }) => {
   const classes = useStyles();
   const user = JSON.parse(localStorage.getItem('profile'));
+  const navigate = useNavigate();
   const [postData, setPostData] = useState({
     title: '',
     message: '',
     tags: '',
     selectedFile: ''
   });
-  const post = useSelector((state) => (currentId ? state.posts.find((p) => p._id === currentId) : null));
+  const post = useSelector((state) => (currentId ? state.posts.posts.find((p) => p._id === currentId) : null));
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,7 +43,7 @@ const Form = ({ currentId, setCurrentId }) => {
     if (currentId) {
       dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
     } else {
-      dispatch(createPost({ ...postData, name: user?.result?.name }));
+      dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
     }
     clear();
   };
@@ -85,7 +87,7 @@ const Form = ({ currentId, setCurrentId }) => {
           label="tags"
           fullWidth
           value={postData.tags}
-          onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })}
+          onChange={(e) => setPostData({ ...postData, tags: e.target.value.replaceAll(' ', '').split(',') })}
         />
         <div className={classes.fileInput}>
           <FileBase
