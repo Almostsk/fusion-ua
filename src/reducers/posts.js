@@ -1,5 +1,5 @@
 import {
-  CREATE, UPDATE, FETCH_ALL, FETCH_POST, FETCH_BY_SEARCH, LIKE, DELETE, START_LOADING, END_LOADING
+  CREATE, UPDATE, FETCH_ALL, FETCH_POST, FETCH_BY_SEARCH, LIKE, DELETE, START_LOADING, END_LOADING, COMMENT
 } from '../constants/actionTypes';
 
 const postsReducer = (state = { isLoading: true, posts: [] }, action) => {
@@ -36,6 +36,16 @@ const postsReducer = (state = { isLoading: true, posts: [] }, action) => {
     case UPDATE:
     case LIKE:
       return { ...state, posts: state.posts.map((post) => (post._id === action.payload._id ? action.payload : post)) };
+    case COMMENT:
+      return {
+        ...state,
+        posts: state.posts.map((post) => {
+          if (post._id === action.payload._id) {
+            return action.payload;
+          }
+          return post;
+        })
+      };
 
     case DELETE:
       return { ...state, posts: state.posts.filter((post) => post._id !== action.payload) };
